@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Order Token — Canteen Express{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+
+        <!-- Token Box -->
+        <div class="token-box text-center mb-4">
+
+            <!-- Checkmark -->
+            <div style="font-size: 4rem;">✅</div>
+
+            <h2 class="fw-bold mt-2">Order Placed!</h2>
+            <p class="opacity-75 mb-4">
+                Show this token number at the counter
+            </p>
+
+            <!-- Token Number -->
+            <div class="bg-white rounded-4 p-4 mb-3 d-inline-block">
+                <p class="text-success mb-1 fw-semibold">YOUR TOKEN NUMBER</p>
+                <div class="token-number text-success">
+                    #{{ token_number }}
+                </div>
+            </div>
+
+            <p class="opacity-75">
+                We will call your token when food is ready!
+            </p>
+        </div>
+
+        <!-- Order Details Card -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-receipt"></i>
+                    Order #{{ order_id }} Summary
+                </h5>
+            </div>
+            <div class="card-body">
+
+                <!-- Items ordered -->
+                {% for item in cart_items %}
+                <div class="d-flex justify-content-between mb-2">
+                    <span>
+                        {{ item.item_name }}
+                        <span class="badge bg-secondary ms-1">
+                            x{{ item.quantity }}
+                        </span>
+                    </span>
+                    <span class="fw-semibold">
+                        Rs. {{ "%.0f"|format(item.price * item.quantity) }}
+                    </span>
+                </div>
+                {% endfor %}
+
+                <hr>
+
+                <!-- Total -->
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>Total Paid:</span>
+                    <span class="text-success">
+                        Rs. {{ "%.0f"|format(total_price) }}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-grid gap-2">
+            <a href="/history" class="btn btn-outline-success btn-lg">
+                <i class="bi bi-clock-history"></i>
+                View Order History
+            </a>
+            <a href="/dashboard" class="btn btn-success btn-lg">
+                <i class="bi bi-grid-fill"></i>
+                Order More Items
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

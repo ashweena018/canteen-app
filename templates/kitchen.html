@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block title %}Kitchen Dashboard — Canteen Express{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-success text-white p-3 rounded-4">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="fw-bold mb-0">
+                        <i class="bi bi-fire"></i> Kitchen Dashboard
+                    </h3>
+                    <p class="mb-0 opacity-75">
+                        Manage and update order statuses
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <button onclick="location.reload()"
+                            class="btn btn-light">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Filter Tabs -->
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link active" href="#" onclick="filterOrders('all')">
+            All Orders
+            <span class="badge bg-secondary ms-1">{{ orders|length }}</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="filterOrders('Pending')">
+            Pending
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="filterOrders('Preparing')">
+            Preparing
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="filterOrders('Ready')">
+            Ready
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="filterOrders('Completed')">
+            Completed
+        </a>
+    </li>
+</ul>
+
+{% if orders %}
+
+<div id="ordersContainer">
+    {% for order in orders %}
+    <div class="card shadow-sm mb-3 order-card" 
+         data-status="{{ order.status }}">
+        <div class="card-body">
+            <div class="row align-items-center">
+
+                <!-- Token -->
+                <div class="col-md-1 text-center mb-3 mb-md-0">
+                    <div class="bg-success text-white rounded-circle
+                                d-inline-flex align-items-center
+                                justify-content-center"
+                         style="width:60px;height:60px;">
+                        <div>
+                            <div style="font-size:0.6rem">TOKEN</div>
+                            <div class="fw-bold fs-5">#{{ order.token_no }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Info -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h6 class="fw-bold mb-1">
+                        Order #{{ order.id }}
+                    </h6>
+                    <p class="text-muted mb-1">
+                        <i class="bi bi-person"></i>
+                        {{ order.customer_name }}
+                    </p>
+                    <p class="text-muted mb-1">
+                        <i class="bi bi-calendar"></i>
+                        {{ order.created_at.strftime('%d %b, %I:%M %p') }}
+                    </p>
+                    <p class="fw-bold text-success mb-0">
+                        Rs. {{ "%.0f"|format(order.total_price) }}
+                    </p>
+                </div>
+
+                <!-- Current Status -->
+                <div class="col-md-3 text-center mb-3 mb-md-0">
+                    {% if order.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                            <i class="bi bi-clock"></i> Pending
+                        </span>
+                    {% elif order.status == 'Preparing' %}
+                        <span class="badge bg-info text-dark fs-6 px-3 py-2">
+                            <i class="bi bi-fire"></i> Preparing
+                        </span>
+                    {% elif order.status == 'Ready' %}
+                        <span class="badge bg-success fs-6 px-3 py-2">
+                            <i class="bi bi-check-circle"></i> Ready
+                        </span>
+                    {% elif order.status == 'Completed' %}
+                        <span class="badge bg-secondary fs-6 px-3 py-2">
+                            <i class="bi bi-check-all"></i> Completed
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="col-md-4 text-md-end">
+                    <div class="btn-group" role="group">
+
+                        {% if order.status == 'Pending' %}
+                            <a href="/update-status/{{ order.id }}/Preparing"
+                               class="btn btn-info btn-sm text-dark">
+                                <i class="bi bi-fire"></i> Start Preparing
+                            </a>
+
+                        {% elif order.status == 'Preparing' %}
+                            <a href="/update-status/{{ order.id }}/Ready"
+                               class="btn btn-success btn-sm">
+                                <i class="bi bi-check-circle"></i> Mark Ready
+                            </a>
+
+                        {% elif order.status == 'Ready' %}
+                            <a href="/update-status/{{ order.id }}/Completed"
+                               class="btn btn-secondary btn-sm">
+                                <i class="bi bi-check-all"></i> Complete
+                            </a>
+
+                        {% elif order.status == 'Completed' %}
+                            <span class="text-muted">
+                                <i class="bi bi-check-all"></i> Done
+                            </span>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+    <div class="text-center mt-5">
+        <i class="bi bi-inbox text-muted" style="font-size:5rem;"></i>
+        <h4 class="text-muted mt-3">No orders yet!</h4>
+        <p class="text-muted">Orders will appear here when customers place them.</p>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Filter orders by status
+function filterOrders(status) {
+    const cards = document.querySelectorAll('.order-card');
+
+    cards.forEach(function(card) {
+        if (status === 'all') {
+            card.style.display = 'block';
+        } else {
+            if (card.dataset.status === status) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+
+    // Update active tab
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+        link.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+// Auto refresh every 30 seconds
+// So kitchen sees new orders automatically
+setTimeout(function() {
+    location.reload();
+}, 30000);
+</script>
+{% endblock %}

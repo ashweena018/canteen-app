@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Cart — Canteen Express{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3 class="fw-bold text-success">
+            <i class="bi bi-cart-fill"></i> Your Cart
+        </h3>
+        <hr>
+    </div>
+</div>
+
+{% if cart_items %}
+
+<div class="row">
+
+    <!-- Cart Items Table -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-success">
+                        <tr>
+                            <th class="ps-3">Item</th>
+                            <th class="text-center">Price</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-center">Subtotal</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--
+                            Loop through cart_items
+                            Each item has: menu_id, item_name, price, quantity
+                        -->
+                        {% for item in cart_items %}
+                        <tr>
+                            <!-- Item Name -->
+                            <td class="ps-3 align-middle">
+                                <span class="fw-semibold">
+                                    {{ item.item_name }}
+                                </span>
+                            </td>
+
+                            <!-- Unit Price -->
+                            <td class="text-center align-middle">
+                                Rs. {{ "%.0f"|format(item.price) }}
+                            </td>
+
+                            <!-- Quantity -->
+                            <td class="text-center align-middle">
+                                <span class="badge bg-secondary px-3 py-2">
+                                    {{ item.quantity }}
+                                </span>
+                            </td>
+
+                            <!-- Subtotal = price x quantity -->
+                            <td class="text-center align-middle fw-bold text-success">
+                                Rs. {{ "%.0f"|format(item.price * item.quantity) }}
+                            </td>
+
+                            <!-- Remove Button -->
+                            <td class="text-center align-middle">
+                                <a href="/remove-from-cart/{{ item.menu_id }}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Remove this item?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cart Actions -->
+        <div class="mt-3 d-flex gap-2">
+            <a href="/dashboard" class="btn btn-outline-success">
+                <i class="bi bi-arrow-left"></i> Continue Shopping
+            </a>
+            <a href="/clear-cart" class="btn btn-outline-danger"
+               onclick="return confirm('Clear entire cart?')">
+                <i class="bi bi-trash"></i> Clear Cart
+            </a>
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-receipt"></i> Order Summary
+                </h5>
+            </div>
+            <div class="card-body">
+
+                <!-- List each item in summary -->
+                {% for item in cart_items %}
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">
+                        {{ item.item_name }} x{{ item.quantity }}
+                    </span>
+                    <span>Rs. {{ "%.0f"|format(item.price * item.quantity) }}</span>
+                </div>
+                {% endfor %}
+
+                <hr>
+
+                <!-- Total -->
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>Total:</span>
+                    <span class="text-success">
+                        Rs. {{ "%.0f"|format(total) }}
+                    </span>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <a href="/place-order" class="btn btn-success btn-lg">
+                        <i class="bi bi-bag-check-fill"></i>
+                        Place Order
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% else %}
+
+<!-- Empty Cart Message -->
+<div class="text-center mt-5">
+    <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+    <h4 class="text-muted mt-3">Your cart is empty!</h4>
+    <p class="text-muted">Add some delicious items from the menu.</p>
+    <a href="/dashboard" class="btn btn-success btn-lg mt-2">
+        <i class="bi bi-grid-fill"></i> Browse Menu
+    </a>
+</div>
+
+{% endif %}
+
+{% endblock %}

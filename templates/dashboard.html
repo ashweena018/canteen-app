@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Menu — Canteen Express{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-success text-white p-4 rounded-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="fw-bold mb-1">
+                        <i class="bi bi-cup-hot-fill"></i>
+                        Welcome, {{ session.get('full_name') }}!
+                    </h2>
+                    <p class="mb-0 opacity-75">
+                        Browse our menu and add items to your cart
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="/cart" class="btn btn-light fw-semibold">
+                        <i class="bi bi-cart-fill text-success"></i>
+                        View Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Items -->
+<div class="row mb-3">
+    <div class="col-12">
+        <h4 class="fw-bold text-success">
+            <i class="bi bi-grid-fill"></i> Our Menu
+        </h4>
+        <hr>
+    </div>
+</div>
+
+<!-- Check if menu has items -->
+{% if menu_items %}
+
+    <!-- 
+        Loop through all menu items
+        'item' = one row from menu table
+        item.id, item.item_name, item.price are the columns
+    -->
+    <div class="row g-4">
+        {% for item in menu_items %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card menu-card h-100 shadow-sm">
+
+                <!-- Card color bar on top -->
+                <div class="bg-success" style="height: 5px;"></div>
+
+                <div class="card-body d-flex flex-column">
+
+                    <!-- Item Icon based on name -->
+                    <div class="text-center mb-3">
+                        <span style="font-size: 2.5rem;">
+                            {% if 'burger' in item.item_name.lower() or 'zinger' in item.item_name.lower() %}
+                                🍔
+                            {% elif 'biryani' in item.item_name.lower() or 'rice' in item.item_name.lower() %}
+                                🍚
+                            {% elif 'coffee' in item.item_name.lower() or 'tea' in item.item_name.lower() %}
+                                ☕
+                            {% elif 'water' in item.item_name.lower() %}
+                                💧
+                            {% elif 'juice' in item.item_name.lower() or 'lassi' in item.item_name.lower() or 'shake' in item.item_name.lower() %}
+                                🥤
+                            {% elif 'fries' in item.item_name.lower() %}
+                                🍟
+                            {% elif 'samosa' in item.item_name.lower() %}
+                                🥟
+                            {% elif 'roll' in item.item_name.lower() or 'sandwich' in item.item_name.lower() %}
+                                🌯
+                            {% elif 'pasta' in item.item_name.lower() %}
+                                🍝
+                            {% elif 'chicken' in item.item_name.lower() %}
+                                🍗
+                            {% else %}
+                                🍽️
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Item Name -->
+                    <h5 class="card-title fw-bold text-center">
+                        {{ item.item_name }}
+                    </h5>
+
+                    <!-- Price Badge -->
+                    <div class="text-center mb-3">
+                        <span class="badge bg-success fs-6 px-3 py-2">
+                            Rs. {{ "%.0f"|format(item.price) }}
+                        </span>
+                    </div>
+
+                    <!-- Spacer to push button to bottom -->
+                    <div class="mt-auto">
+                        <!-- 
+                            Add to Cart Form
+                            Sends item id and quantity to /add-to-cart
+                            We will build this route in Phase 8
+                        -->
+                        <form action="/add-to-cart" method="POST">
+                            <input type="hidden" name="menu_id" value="{{ item.id }}">
+                            <input type="hidden" name="item_name" value="{{ item.item_name }}">
+                            <input type="hidden" name="price" value="{{ item.price }}">
+
+                            <!-- Quantity Selector -->
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">Qty</span>
+                                <input type="number" 
+                                       name="quantity" 
+                                       class="form-control text-center" 
+                                       value="1" 
+                                       min="1" 
+                                       max="10">
+                            </div>
+
+                            <!-- Add to Cart Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-cart-plus"></i>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <!-- Show this if no menu items in database -->
+    <div class="text-center mt-5">
+        <i class="bi bi-exclamation-circle text-warning" 
+           style="font-size: 4rem;"></i>
+        <h4 class="text-muted mt-3">No menu items available</h4>
+        <p class="text-muted">Please check back later!</p>
+    </div>
+{% endif %}
+
+{% endblock %}

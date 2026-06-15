@@ -1,0 +1,164 @@
+/* ==========================================
+   Canteen Express - Complete Stylesheet
+========================================== */
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ── Navbar ── */
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+/* ── Cards ── */
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.menu-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.menu-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important;
+}
+
+/* ── Auth Cards ── */
+.auth-card {
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* ── Forms ── */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #dee2e6;
+    padding: 10px 14px;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.15);
+}
+
+/* ── Buttons ── */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1aab82);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+}
+
+/* ── Token Box ── */
+.token-box {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+}
+
+.token-number {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ── Alerts ── */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ── Tables ── */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* ── Badges ── */
+.badge {
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* ── Footer ── */
+footer {
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+}
+
+/* ── Nav Links ── */
+.nav-link {
+    transition: opacity 0.2s;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    opacity: 0.85;
+}
+
+/* ── Welcome Banner ── */
+.welcome-banner {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(40,167,69,0.25);
+}
+
+/* ── Order Cards in History ── */
+.order-history-card {
+    transition: transform 0.2s ease;
+}
+
+.order-history-card:hover {
+    transform: translateX(4px);
+}
+
+/* ── Token Circle in History ── */
+.token-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    box-shadow: 0 4px 10px rgba(40,167,69,0.3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .token-number { font-size: 3.5rem; }
+    .token-box { padding: 25px; }
+}

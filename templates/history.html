@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Order History — Canteen Express{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3 class="fw-bold text-success">
+            <i class="bi bi-clock-history"></i> My Orders
+        </h3>
+        <hr>
+    </div>
+</div>
+
+{% if orders %}
+
+    {% for order in orders %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <div class="row align-items-center">
+
+                <!-- Token Number -->
+                <div class="col-md-2 text-center mb-3 mb-md-0">
+                    <div class="bg-success text-white rounded-circle d-inline-flex
+                                align-items-center justify-content-center"
+                         style="width:70px; height:70px;">
+                        <div>
+                            <div style="font-size:0.65rem">TOKEN</div>
+                            <div class="fw-bold fs-4">#{{ order.token_no }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Info -->
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h6 class="fw-bold mb-1">Order #{{ order.id }}</h6>
+                    <p class="text-muted mb-1">
+                        <i class="bi bi-calendar"></i>
+                        {{ order.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                    </p>
+                    <p class="fw-bold text-success mb-0">
+                        Total: Rs. {{ "%.0f"|format(order.total_price) }}
+                    </p>
+                </div>
+
+                <!-- Status Badge -->
+                <div class="col-md-4 text-md-end">
+                    {% if order.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                            <i class="bi bi-clock"></i> Pending
+                        </span>
+                    {% elif order.status == 'Preparing' %}
+                        <span class="badge bg-info text-dark fs-6 px-3 py-2">
+                            <i class="bi bi-fire"></i> Preparing
+                        </span>
+                    {% elif order.status == 'Ready' %}
+                        <span class="badge bg-success fs-6 px-3 py-2">
+                            <i class="bi bi-check-circle"></i> Ready!
+                        </span>
+                    {% elif order.status == 'Completed' %}
+                        <span class="badge bg-secondary fs-6 px-3 py-2">
+                            <i class="bi bi-check-all"></i> Completed
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% else %}
+    <div class="text-center mt-5">
+        <i class="bi bi-bag-x text-muted" style="font-size:5rem;"></i>
+        <h4 class="text-muted mt-3">No orders yet!</h4>
+        <p class="text-muted">Place your first order from the menu.</p>
+        <a href="/dashboard" class="btn btn-success btn-lg mt-2">
+            <i class="bi bi-grid-fill"></i> Browse Menu
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}
