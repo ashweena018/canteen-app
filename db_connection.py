@@ -1,12 +1,22 @@
-from flask_mysqldb import MySQL
+import pymysql
+import pymysql.cursors
+from flask import g
 import os
 
-mysql = MySQL()
+def get_db():
+    if 'db' not in g:
+        g.db = pymysql.connect(
+            host=os.environ.get('MYSQL_HOST', 'localhost'),
+            user=os.environ.get('MYSQL_USER', 'root'),
+            password=os.environ.get('MYSQL_PASSWORD', 'Mysql@2026'),
+            database=os.environ.get('MYSQL_DB', 'canteen_expresss'),
+            cursorclass=pymysql.cursors.DictCursor
+        )
+    return g.db
 
 def init_db(app):
-    app.config['MYSQL_HOST']        = os.environ.get('MYSQL_HOST', 'localhost')
-    app.config['MYSQL_USER']        = os.environ.get('MYSQL_USER', 'root')
-    app.config['MYSQL_PASSWORD']    = os.environ.get('MYSQL_PASSWORD', 'Mysql@2026')
-    app.config['MYSQL_DB']          = os.environ.get('MYSQL_DB', 'canteen_expresss')
-    app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-    mysql.init_app(app)
+    @app.teardown_appcontext
+    def close_db(error):
+        db = g.pop('db', None)
+        if db is not None:
+            db.close()

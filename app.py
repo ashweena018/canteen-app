@@ -34,7 +34,7 @@ def register():
             return render_template('register.html')
 
         try:
-            cursor = mysql.connection.cursor()
+            cursor = get_db().cursor()
             cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
             if cursor.fetchone():
                 flash('Email already registered! Please login.', 'warning')
@@ -46,7 +46,7 @@ def register():
                 "INSERT INTO users (name, email, password, role) VALUES (%s,%s,%s,%s)",
                 (name, email, hashed, role)
             )
-            mysql.connection.commit()
+            get_db().commit()
             cursor.close()
             flash('Account created successfully! Please login.', 'success')
             return redirect(url_for('login'))
@@ -69,7 +69,7 @@ def login():
             return render_template('login.html')
 
         try:
-            cursor = mysql.connection.cursor()
+            cursor = get_db().cursor()
             cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
             user = cursor.fetchone()
             cursor.close()
@@ -98,7 +98,7 @@ def dashboard():
         return redirect(url_for('login'))
 
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
 
         # Fetch all available menu items from database
         # We order by category so food, drinks, snacks are grouped
@@ -128,7 +128,7 @@ def logout():
 @app.route('/test-db')
 def test_db():
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
         cursor.execute("SELECT VERSION()")
         data = cursor.fetchone()
         cursor.close()
@@ -265,7 +265,7 @@ def place_order():
         return redirect(url_for('cart'))
 
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
 
         # ── Step 1: Generate Token Number ──────────
         # Get the highest token number currently in database
@@ -309,7 +309,7 @@ def place_order():
 
         # ── Step 5: Commit everything ───────────────
         # Both inserts save together (transaction)
-        mysql.connection.commit()
+        get_db().commit()
         cursor.close()
 
         # ── Step 6: Clear the cart ──────────────────
@@ -340,7 +340,7 @@ def history():
         return redirect(url_for('login'))
 
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
 
         # Get all orders for this user
         # Most recent first (ORDER BY created_at DESC)
@@ -376,7 +376,7 @@ def kitchen():
         return redirect(url_for('dashboard'))
 
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
 
         # Get all orders with user names
         # JOIN connects orders table with users table
@@ -423,12 +423,12 @@ def update_status(order_id, new_status):
         return redirect(url_for('kitchen'))
 
     try:
-        cursor = mysql.connection.cursor()
+        cursor = get_db().cursor()
         cursor.execute(
             "UPDATE orders SET status = %s WHERE id = %s",
             (new_status, order_id)
         )
-        mysql.connection.commit()
+        get_db().commit()
         cursor.close()
         flash('Order #' + str(order_id) + ' updated to ' + new_status, 'success')
 
