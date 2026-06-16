@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from db_connection import mysql, init_db
+from db_connection import get_db, init_db
 
 app = Flask(__name__)
 app.secret_key = 'canteen_express_2024'
