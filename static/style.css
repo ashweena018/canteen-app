@@ -1,5 +1,5 @@
 /* ==========================================
-   Canteen Express - Complete Stylesheet
+   Banbwu Cafe - Complete Stylesheet
 ========================================== */
 
 html { scroll-behavior: smooth; }
@@ -45,14 +45,14 @@ body {
 /* ── Forms ── */
 .form-control, .form-select {
     border-radius: 8px;
-    border: 1.5px solid #dee2e6;
+    border: 1.5px solid #e2d4d6;
     padding: 10px 14px;
     transition: border-color 0.2s;
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.15);
+    border-color: #5c1f2e;
+    box-shadow: 0 0 0 0.2rem rgba(92,31,46,0.15);
 }
 
 /* ── Buttons ── */
@@ -63,24 +63,45 @@ body {
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    border: none;
+    background: linear-gradient(135deg, #5c1f2e, #7a2c3e) !important;
+    border: none !important;
+    color: #fff !important;
 }
 
 .btn-success:hover {
-    background: linear-gradient(135deg, #218838, #1aab82);
+    background: linear-gradient(135deg, #44161f, #5c1f2e) !important;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+    box-shadow: 0 4px 12px rgba(92,31,46,0.3);
+}
+
+.btn-outline-success {
+    color: #5c1f2e !important;
+    border-color: #5c1f2e !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #5c1f2e !important;
+    color: #fff !important;
+}
+
+.btn-outline-danger {
+    color: #7a2c3e !important;
+    border-color: #7a2c3e !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #7a2c3e !important;
+    color: #fff !important;
 }
 
 /* ── Token Box ── */
 .token-box {
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: linear-gradient(135deg, #5c1f2e, #7a2c3e);
     color: white;
     border-radius: 20px;
     padding: 40px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+    box-shadow: 0 10px 30px rgba(92,31,46,0.3);
 }
 
 .token-number {
@@ -108,10 +129,18 @@ body {
     letter-spacing: 0.3px;
 }
 
+.table-success {
+    background-color: #f0e2e5 !important;
+}
+
 /* ── Badges ── */
 .badge {
     border-radius: 20px;
     font-weight: 500;
+}
+
+.badge.bg-success {
+    background-color: #5c1f2e !important;
 }
 
 /* ── Footer ── */
@@ -131,9 +160,9 @@ footer {
 
 /* ── Welcome Banner ── */
 .welcome-banner {
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: linear-gradient(135deg, #5c1f2e, #7a2c3e);
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(40,167,69,0.25);
+    box-shadow: 0 4px 15px rgba(92,31,46,0.25);
 }
 
 /* ── Order Cards in History ── */
@@ -153,8 +182,17 @@ footer {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #28a745, #20c997);
-    box-shadow: 0 4px 10px rgba(40,167,69,0.3);
+    background: linear-gradient(135deg, #5c1f2e, #7a2c3e);
+    box-shadow: 0 4px 10px rgba(92,31,46,0.3);
+}
+
+/* ── Bootstrap Overrides (so bg-success / text-success classes turn maroon) ── */
+.bg-success {
+    background-color: #5c1f2e !important;
+}
+
+.text-success {
+    color: #5c1f2e !important;
 }
 
 /* ── Responsive ── */

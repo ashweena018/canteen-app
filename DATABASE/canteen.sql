@@ -1,5 +1,5 @@
 -- ============================================================
--- Canteen Express - Full Database Setup Script
+-- Banbwu Cafe - Full Database Setup Script
 -- Run this file once to set up your entire database
 -- ============================================================
 
